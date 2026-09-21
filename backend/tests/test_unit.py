@@ -13,8 +13,8 @@ def test_normalizer_stable_range(valid_files):
     from backend.app.services.preprocess import build_preproc
 
     out = build_preproc()({k: v for k, v in valid_files.items()})
-    img = np.asarray(out["image"])
-    brain = img[np.abs(img).sum(0) > 0]
+    img = np.asarray(out["image"])  # [3, X, Y, Z]
+    brain = img[:, np.abs(img).sum(0) > 0]
     assert abs(brain.mean()) < 0.5 and 0.5 < brain.std() < 2.0
 
 
